@@ -1,27 +1,13 @@
-const express = require('express');
-const app = express();
+const express = require('express'); // importa o expresses para o projeto (necessário ter instalado anteriormente)
+const app = express(); // instancia o express dentro de app
 
-//Verbos HTTP
-// GET: Recebe dados do resource
-// POST: Enviar dados ou informações para serem processados por um Resource
-// PUT: Atualizar os dados de um Resource
-// DELETE: Deletar um Resource
+const data = require("./data.json") // cria um "banco de dados" data e joga dentro dele o arquivo data.json
+// Na prática real isso seria puxado de alguma aplicação ou banco de dados
 
-// Resource -> endpoint
-
-/* 
-express
-
-app.get()
-app.post()
-app.put()
-app.delete()
-*/
-
-app.get("/endpoint", function(req, res){
-    
+app.get("/endpoint", function(req, res){ // cria o endpoint "./endpoint" 
+    res.json(data) // ao acessar ele irá rodar a funçção de callback que trará res. Contendo as informações de data (arquivo criado acima)
 })
 
-app.listen(3000, function(){
+app.listen(3000, function(){ // inicia o servidor
     console.log("Running in port 3000")
 });
