@@ -1,6 +1,7 @@
 const express = require('express'); // importa o expresses para o projeto (necessário ter instalado anteriormente)
 const app = express(); // instancia o express dentro de app
 app.use(express.json());
+const fs = require('fs'); // persistir dados dentro do arquivo json
 
 const data = require("./data.json") // cria um "banco de dados" data e joga dentro dele o arquivo data.json
 // Na prática real isso seria puxado de alguma aplicação ou banco de dados
@@ -94,6 +95,23 @@ app.put("/endpoint/:id", function(req, res){
 
     res.status(200).json(client);
 
+})
+
+// criar novo item para o arquivo json usando POST
+
+app.post("/endpoint", function(req, res){
+    const { name, email } = req.body;
+
+    if(!name || !email){
+        return res.status(400).json({ error: "Parâmetros inválidos !"})
+    }
+
+    const newClient = { id: data.length + 1, name, email };
+    data.push(newClient);
+
+    fs.writeFileSync('./data.json', JSON.stringify(data, null, 2));
+
+    res.status(201).json(newClient);
 })
 
 app.listen(3000, function(){ // inicia o servidor
