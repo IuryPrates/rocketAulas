@@ -12,7 +12,18 @@ app.get("/endpoint", function(req, res){ // cria o endpoint "./endpoint"
 // retorna apenas o cliente do id passado como parâmetro
 app.get("/endpoint/:id", function(req, res){
     const { id } = req.params
+
+    //validação de id passado dentro do params
+    if(isNaN(id)){
+        return res.status(400).json({error: "ID inválido!"});
+    }
+
     const client = data.find(cli => cli.id == id)
+
+    // cliente não foi encontrado
+    if (!client) {
+        return res.status(404).json({ error: "Cliente não encontrado" });
+    }
 
     // se não existir o cliente passado como parâmetro
     if(!client)
@@ -24,11 +35,16 @@ app.get("/endpoint/:id", function(req, res){
 
 //post
 
+// Atualizar dados name e email usando POST
 app.post("/endpoint/:id", function(req, res){
     const { name, email} = req.body; // salva nas constantes 'name' e 'email' os parâmetros passados dentro do body (json da requisição)
 
     const { id } = req.params
     const client = data.find(cli => cli.id == id)
+
+    if (!client) {
+        return res.status(404).json({ error: "Cliente não encontrado" });
+    }
 
     //validação de formato de nome e email
     if(!name || !email){
@@ -47,19 +63,36 @@ app.post("/endpoint/:id", function(req, res){
 
 });
 
-// put -> fazer o upload de um parâmetro do cliente
+// put -> fazer o upload de um parâmetro do cliente usando PUT
 
 app.put("/endpoint/:id", function(req, res){
-    const { id } = req.params;
-    const client = data.find(cli => cli.id == id);
-    // se não existir o cliente passado como parâmetro
-    if(!client) return res.status(401).json();
+    const { name, email} = req.body; // salva nas constantes 'name' e 'email' os parâmetros passados dentro do body (json da requisição)
+    const { id } = req.params
 
-    const { name } = req.body;
+    if (isNaN(id)) {
+        return res.status(400).json({ error: "ID deve ser um número" });
+    }
+
+    const client = data.find(cli => cli.id == id)
+
+    if (!client) {
+        return res.status(404).json({ error: "Cliente não encontrado" });
+    }
+
+    //validação de formato de nome e email
+    if(!name || !email){
+        return res.status(400).json({ error: "Nome/email são obrigatórios!!"})
+    }
+    
+    const emailVerified = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailVerified.test(email)){
+        return res.status(400).json({error: "Email inválido! "});
+    }
 
     client.name = name;
+    client.email = email;
 
-    res.json(client);
+    res.status(200).json(client);
 
 })
 
