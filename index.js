@@ -7,6 +7,21 @@ const app = express();
 // PUT: Atualizar os dados de um Resource
 // DELETE: Deletar um Resource
 
+// Resource -> endpoint
+
+/* 
+express
+
+app.get()
+app.post()
+app.put()
+app.delete()
+*/
+
+app.get("/endpoint", function(req, res){
+    
+})
+
 app.listen(3000, function(){
     console.log("Running in port 3000")
 });
