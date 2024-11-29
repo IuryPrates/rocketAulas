@@ -5,7 +5,7 @@
     "express": "^4.21.1"
   },
   "engines":{
-    "node": "14.x"
+    "node": "20.x"
   },
   "scripts": {
     "start": "node index.js"
