@@ -6,12 +6,12 @@ const fs = require('fs'); // persistir dados dentro do arquivo json
 const data = require("./data.json") // cria um "banco de dados" data e joga dentro dele o arquivo data.json
 // Na prática real isso seria puxado de alguma aplicação ou banco de dados
 
-app.get("/endpoint", function(req, res){ // cria o endpoint "./endpoint" 
+app.get("/users", function(req, res){ // cria o endpoint "./endpoint" 
     res.json(data) // ao acessar ele irá rodar a função de callback que trará res. Contendo as informações de data (arquivo criado acima)
 })
 
 // retorna apenas o cliente do id passado como parâmetro
-app.get("/endpoint/:id", function(req, res){
+app.get("/users/:id", function(req, res){
     const { id } = req.params
 
     //validação de id passado dentro do params
@@ -37,14 +37,14 @@ app.get("/endpoint/:id", function(req, res){
 //post
 
 // Atualizar dados name e email usando POST
-app.post("/endpoint/:id", function(req, res){
+app.post("/users/:id", function(req, res){
     const { name, email} = req.body; // salva nas constantes 'name' e 'email' os parâmetros passados dentro do body (json da requisição)
 
     const { id } = req.params
     const client = data.find(cli => cli.id == id)
 
     if (!client) {
-        return res.status(404).json({ error: "Cliente não encontrado" });
+        return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
     //validação de formato de nome e email
@@ -66,7 +66,7 @@ app.post("/endpoint/:id", function(req, res){
 
 // put -> fazer o upload de um parâmetro do cliente usando PUT
 
-app.put("/endpoint/:id", function(req, res){
+app.put("/users/:id", function(req, res){
     const { name, email} = req.body; // salva nas constantes 'name' e 'email' os parâmetros passados dentro do body (json da requisição)
     const { id } = req.params
 
@@ -77,7 +77,7 @@ app.put("/endpoint/:id", function(req, res){
     const client = data.find(cli => cli.id == id)
 
     if (!client) {
-        return res.status(404).json({ error: "Cliente não encontrado" });
+        return res.status(404).json({ error: "Usuário não encontrado" });
     }
 
     //validação de formato de nome e email
@@ -99,7 +99,7 @@ app.put("/endpoint/:id", function(req, res){
 
 // criar novo item para o arquivo json usando POST
 
-app.post("/endpoint", function(req, res){
+app.post("/users", function(req, res){
     const { name, email } = req.body;
 
     if(!name || !email){
