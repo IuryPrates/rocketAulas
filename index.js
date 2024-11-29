@@ -117,5 +117,4 @@ app.post("/endpoint", function(req, res){
 app.listen(3000, function(){ // inicia o servidor
     console.log("Running in port 3000")
 
-    //console.log(data)
 });
